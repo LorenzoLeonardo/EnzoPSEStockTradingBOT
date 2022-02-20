@@ -69,6 +69,7 @@ BEGIN_MESSAGE_MAP(CEnzoPSEStockTradingBOTDlg, CDialogEx)
 //	ON_BN_CLICKED(IDOK, &CEnzoPSEStockTradingBOTDlg::OnBnClickedOk)
 ON_BN_CLICKED(IDC_START_STOP, &CEnzoPSEStockTradingBOTDlg::OnBnClickedStartStop)
 ON_NOTIFY(NM_DBLCLK, IDC_LIST_STOCKS, &CEnzoPSEStockTradingBOTDlg::OnNMDblclkListStocks)
+ON_BN_CLICKED(IDC_BUTTON_CHECKGRAPH, &CEnzoPSEStockTradingBOTDlg::OnBnClickedButtonCheckgraph)
 END_MESSAGE_MAP()
 
 
@@ -382,4 +383,12 @@ void CEnzoPSEStockTradingBOTDlg::OnNMDblclkListStocks(NMHDR* pNMHDR, LRESULT* pR
 	*pResult = 0;
 	CDialogStockChart m_dlgStockChart;
 	INT nRet = m_dlgStockChart.DoModal();
+}
+
+
+void CEnzoPSEStockTradingBOTDlg::OnBnClickedButtonCheckgraph()
+{
+	// TODO: Add your control notification handler code here
+	CDialogStockChart dlg;
+	INT nRet = dlg.DoModal();
 }

@@ -64,4 +64,5 @@ public:
 //	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedStartStop();
 	afx_msg void OnNMDblclkListStocks(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedButtonCheckgraph();
 };
