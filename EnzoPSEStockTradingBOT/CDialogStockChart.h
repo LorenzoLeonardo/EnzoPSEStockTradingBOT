@@ -1,6 +1,8 @@
 #pragma once
 #include "afxdialogex.h"
-
+#include "ChartCtrl/ChartCtrl.h"
+#include "ChartCtrl/ChartLineSerie.h"
+#include "ChartCtrl/Chartlabel.h"
 
 // CDialogStockChart dialog
 
@@ -19,6 +21,16 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
+	virtual BOOL OnInitDialog();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
+
+	CChartCtrl m_ChartCtrl;
+	CChartStandardAxis *pBottomAxis;
+	CChartStandardAxis *pLeftAxis;
+	CChartLineSerie *pSeries;
+public:
+
+
 };

@@ -5,6 +5,7 @@
 #pragma once
 #include "CStock.h"
 #include "CListCtrlCustom.h"
+#include "CDialogStockChart.h"
 #define STOCK_BDO     _T("https://phisix-api4.appspot.com/stocks/BDO.json")
 #define STOCK_BPI     _T("https://phisix-api4.appspot.com/stocks/BPI.json")
 #define STOCK_CHIB    _T("https://phisix-api4.appspot.com/stocks/CHIB.json")
@@ -46,6 +47,7 @@ public:
 	}
 // Implementation
 protected:
+	
 	HICON m_hIcon;
 	HANDLE m_hListenJSON;
 	HANDLE m_hEvent;
@@ -61,4 +63,5 @@ public:
 	afx_msg void OnClose();
 //	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedStartStop();
+	afx_msg void OnNMDblclkListStocks(NMHDR* pNMHDR, LRESULT* pResult);
 };
