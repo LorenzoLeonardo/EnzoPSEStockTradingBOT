@@ -166,12 +166,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -191,6 +191,38 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CDialogStockChart.h" />
+    <ClInclude Include="ChartCtrl\ChartAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartAxisLabel.h" />
+    <ClInclude Include="ChartCtrl\ChartBalloonLabel.h" />
+    <ClInclude Include="ChartCtrl\ChartBarSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartCandlestickSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartCrossHairCursor.h" />
+    <ClInclude Include="ChartCtrl\ChartCtrl.h" />
+    <ClInclude Include="ChartCtrl\ChartCursor.h" />
+    <ClInclude Include="ChartCtrl\ChartDateTimeAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartDragLineCursor.h" />
+    <ClInclude Include="ChartCtrl\ChartFont.h" />
+    <ClInclude Include="ChartCtrl\ChartGanttSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartGradient.h" />
+    <ClInclude Include="ChartCtrl\ChartGrid.h" />
+    <ClInclude Include="ChartCtrl\ChartLabel.h" />
+    <ClInclude Include="ChartCtrl\ChartLegend.h" />
+    <ClInclude Include="ChartCtrl\ChartLineSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartLogarithmicAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartMouseListener.h" />
+    <ClInclude Include="ChartCtrl\ChartPointsArray.h" />
+    <ClInclude Include="ChartCtrl\ChartPointsSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartScrollBar.h" />
+    <ClInclude Include="ChartCtrl\ChartSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartSerieBase.h" />
+    <ClInclude Include="ChartCtrl\ChartSeriesMouseListener.h" />
+    <ClInclude Include="ChartCtrl\ChartStandardAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartString.h" />
+    <ClInclude Include="ChartCtrl\ChartSurfaceSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartTitle.h" />
+    <ClInclude Include="ChartCtrl\ChartXYSerie.h" />
+    <ClInclude Include="ChartCtrl\PointsOrdering.h" />
     <ClInclude Include="CJSONParser.h" />
     <ClInclude Include="CListCtrlCustom.h" />
     <ClInclude Include="CStock.h" />
@@ -202,6 +234,30 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CDialogStockChart.cpp" />
+    <ClCompile Include="ChartCtrl\ChartAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartAxisLabel.cpp" />
+    <ClCompile Include="ChartCtrl\ChartBarSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCandlestickSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCrossHairCursor.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCtrl.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCursor.cpp" />
+    <ClCompile Include="ChartCtrl\ChartDateTimeAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartDragLineCursor.cpp" />
+    <ClCompile Include="ChartCtrl\ChartFont.cpp" />
+    <ClCompile Include="ChartCtrl\ChartGanttSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartGradient.cpp" />
+    <ClCompile Include="ChartCtrl\ChartGrid.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLegend.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLineSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLogarithmicAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartPointsSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartScrollBar.cpp" />
+    <ClCompile Include="ChartCtrl\ChartSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartStandardAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartSurfaceSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartTitle.cpp" />
+    <ClCompile Include="ChartCtrl\ChartXYSerie.cpp" />
     <ClCompile Include="CJSONParser.cpp" />
     <ClCompile Include="CListCtrlCustom.cpp" />
     <ClCompile Include="EnzoPSEStockTradingBOT.cpp" />
@@ -221,6 +277,7 @@
     <None Include="res\EnzoPSEStockTradingBOT.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="C:\Users\loren\Downloads\android-icon-72x72.bmp" />
     <Image Include="res\EnzoPSEStockTradingBOT.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
