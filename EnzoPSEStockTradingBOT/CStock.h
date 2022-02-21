@@ -23,6 +23,7 @@ protected:
     string_t        m_sStockSymbol;
     string_t        m_sDate;
     string_t        m_sTime;
+    string_t        m_sGMT;
     ULONG           m_ulGMT;
     ULONG           m_ulTime;
     vector<CStock>  m_vChangeHistory;
@@ -43,6 +44,7 @@ public:
         this->m_sStockSymbol = b.m_sStockSymbol;
         this->m_sDate = b.m_sDate;
         this->m_sTime = b.m_sTime;
+        this->m_sGMT = b.m_sGMT;
         this->m_ulGMT = b.m_ulGMT;
         this->m_ulTime = b.m_ulTime;
         this->m_vChangeHistory.assign(b.m_vChangeHistory.begin(), b.m_vChangeHistory.end());
@@ -75,11 +77,18 @@ public:
     }
     void SetDate(string_t sDate)
     {
-        m_sDate = sDate;
+        //2022-02-21T12:50:00+08:00
+        m_sDate = sDate.substr(0,sDate.find(_T("T")));
+        m_sTime = sDate.substr(sDate.find(_T("T"))+1, (sDate.find(_T("+")) - sDate.find(_T("T"))-1));
+        m_sGMT = sDate.substr(sDate.find(_T("+"))+1, sDate.length()- sDate.find(_T("+")));
     }
     void SetTime(string_t sTime)
     {
         m_sTime = sTime;
+    }
+    void SetGMT(string_t sGMT)
+    {
+        m_sGMT = sGMT;
     }
     void SetGMT(ULONG ulGMT)
     {
@@ -122,7 +131,11 @@ public:
     {
         return m_sTime;
     }
-    ULONG GetGMT()
+    string_t GetGMT()
+    {
+        return m_sGMT;
+    }
+    ULONG GetGMTUl()
     {
         return m_ulGMT;
     }
