@@ -24,7 +24,7 @@ protected:
     string_t        m_sDate;
     string_t        m_sTime;
     string_t        m_sGMT;
-    ULONG           m_ulGMT;
+    int             m_nGMT;
     ULONG           m_ulTime;
     vector<CStock>  m_vChangeHistory;
 
@@ -44,7 +44,7 @@ protected:
 public:
 
     CStock() :m_sCompanyName(_T("")), m_sCurrency(_T("")), m_fPricePerShare(0), m_fPercentChange(0),
-        m_ulVolume(0), m_sStockSymbol(_T("")), m_sDate(_T("")), m_sTime(_T("")), m_ulGMT(0), m_ulTime(0) {}
+        m_ulVolume(0), m_sStockSymbol(_T("")), m_sDate(_T("")), m_sTime(_T("")), m_nGMT(0), m_ulTime(0) {}
     ~CStock() {}
 
     CStock operator=(const CStock& b)
@@ -58,7 +58,7 @@ public:
         this->m_sDate = b.m_sDate;
         this->m_sTime = b.m_sTime;
         this->m_sGMT = b.m_sGMT;
-        this->m_ulGMT = b.m_ulGMT;
+        this->m_nGMT = b.m_nGMT;
         this->m_ulTime = b.m_ulTime;
         this->m_vChangeHistory.assign(b.m_vChangeHistory.begin(), b.m_vChangeHistory.end());
         return *this;
@@ -93,10 +93,13 @@ public:
         //2022-02-21T12:50:00+08:00
         m_sDate = sDate.substr(0,sDate.find(_T("T")));
         m_sTime = sDate.substr(sDate.find(_T("T"))+1, (sDate.find(_T("+")) - sDate.find(_T("T"))-1));
-        m_sGMT = sDate.substr(sDate.find(_T("+"))+1, sDate.length()- sDate.find(_T("+")));
+        if(sDate.find(_T("+")) != string_t::npos)
+            m_sGMT = sDate.substr(sDate.find(_T("+")), sDate.length() - sDate.find(_T("+")));
+        else if(sDate.find(_T("-")) != string_t::npos)
+            m_sGMT = sDate.substr(sDate.find(_T("-")), sDate.length() - sDate.find(_T("-")));
 
+        m_nGMT = _ttoi(m_sGMT.c_str());
         m_ulTime = StringTimeToUlong(m_sTime);
-
     }
     void SetTime(string_t sTime)
     {
@@ -106,9 +109,9 @@ public:
     {
         m_sGMT = sGMT;
     }
-    void SetGMT(ULONG ulGMT)
+    void SetGMT(int ulGMT)
     {
-        m_ulGMT = ulGMT;
+        m_nGMT = ulGMT;
     }
     void SetTimeUL(ULONG ulTime)
     {
@@ -151,9 +154,9 @@ public:
     {
         return m_sGMT;
     }
-    ULONG GetGMTUl()
+    int GetGMTInt()
     {
-        return m_ulGMT;
+        return m_nGMT;
     }
     ULONG GetTimeUl()
     {
