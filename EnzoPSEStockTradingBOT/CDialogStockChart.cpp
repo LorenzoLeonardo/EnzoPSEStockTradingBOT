@@ -37,6 +37,7 @@ void CDialogStockChart::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CUSTOM_CHART, m_ChartCtrl);
+	DDX_Control(pDX, IDC_STATIC_STOCKNAME, m_ctrlStaticCompanyName);
 }
 
 
@@ -85,6 +86,9 @@ BOOL CDialogStockChart::UpdateGraph()
 BOOL CDialogStockChart::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	CString csCompDisp;
+	csCompDisp.Format(_T("Company: %s Stock Symbol: %s"), m_pCStock->GetCompanyName().c_str(), m_pCStock->GetStockSymbol().c_str());
+	m_ctrlStaticCompanyName.SetWindowText(csCompDisp);
 
 	CChartCtrl ref;
 	ref.RemoveAllSeries();

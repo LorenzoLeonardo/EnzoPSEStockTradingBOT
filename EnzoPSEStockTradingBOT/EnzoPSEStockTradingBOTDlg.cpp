@@ -217,8 +217,6 @@ void CEnzoPSEStockTradingBOTDlg::DisplayStockInfo(map<string_t, CStock>& mapStoc
 	LVFINDINFO lvFindInfo;
 	lvFindInfo.flags = LVFI_PARTIAL | LVFI_STRING;
 	
-
-
 	LVITEM lvItem;
 	lvItem.mask = LVIF_TEXT;
 	int findResult = -1;
@@ -359,14 +357,6 @@ void CEnzoPSEStockTradingBOTDlg::OnClose()
 
 	}
 }
-
-
-//void CEnzoPSEStockTradingBOTDlg::OnBnClickedOk()
-//{
-//	// TODO: Add your control notification handler code here
-//	CDialogEx::OnOK();
-//}
-
 
 void CEnzoPSEStockTradingBOTDlg::OnBnClickedStartStop()
 {

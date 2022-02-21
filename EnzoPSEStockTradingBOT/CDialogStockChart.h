@@ -42,4 +42,5 @@ protected:
 
 public:
 	afx_msg void OnClose();
+	CStatic m_ctrlStaticCompanyName;
 };
