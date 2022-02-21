@@ -25,11 +25,12 @@ IMPLEMENT_DYNAMIC(CDialogStockChart, CDialogEx)
 CDialogStockChart::CDialogStockChart(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_CHART_DIALOG, pParent)
 {
-
+	m_hGraphChart = NULL;
 }
 
 CDialogStockChart::~CDialogStockChart()
 {
+	CloseHandle(m_hGraphChart);
 }
 
 void CDialogStockChart::DoDataExchange(CDataExchange* pDX)
@@ -42,37 +43,64 @@ void CDialogStockChart::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CDialogStockChart, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
 // CDialogStockChart message handlers
 
 
+unsigned __stdcall  CDialogStockChart::UpdateGraphThread(void* parg)
+{
+	CDialogStockChart* pDLG = (CDialogStockChart*)parg;
+
+	while (!pDLG->UpdateGraph())
+	{
+		Sleep(60000);
+	}
+	return 0;
+}
+
+BOOL CDialogStockChart::UpdateGraph()
+{
+
+
+	double XVal[20];
+	double YVal[20];
+
+	memset(XVal, 0, sizeof(XVal));
+	memset(YVal, 0, sizeof(YVal));
+	YVal[0] = m_pCStock->GetPricePerShare();
+	XVal[0] = (((double)GetTickCount64()/ (double)1000)/(double)60) - (((double)m_ulTimeStart/ (double)1000) / (double)60);
+
+	pSeries->AddPoints(XVal, YVal, 1);
+
+	return m_bIsClosed;
+}
+
 BOOL CDialogStockChart::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// TODO:  Add extra initialization here
 	CChartCtrl ref;
 	ref.RemoveAllSeries();
 	m_ChartCtrl.EnableRefresh(true);
 	pBottomAxis = m_ChartCtrl.CreateStandardAxis(CChartCtrl::BottomAxis);
 	pLeftAxis = m_ChartCtrl.CreateStandardAxis(CChartCtrl::LeftAxis);
-	pBottomAxis->SetMinMax(100, 300);
-	pLeftAxis->SetMinMax(-1, 1.5);
+	pBottomAxis->SetMinMax(0, 360);
+	pLeftAxis->SetMinMax(0, m_pCStock->GetPricePerShare()*2);
 	pBottomAxis->SetTickIncrement(false, 20.0);
 	pBottomAxis->SetDiscrete(false);
 	pBottomAxis->EnableScrollBar(true);
 
+	
 	pSeries = m_ChartCtrl.CreateLineSerie();
 	pSeries->SetWidth(5);
 	pSeries->SetColor(RGB(255, 0, 255));
-
-	double XVal[20] = {103.5,145.856};
-	double YVal[20] = { 0.812003,0.295188 };
-
-	pSeries->SetPoints(XVal, YVal, 20);
-	m_ChartCtrl.EnableRefresh(true);
+	// TODO:  Add extra initialization here
+	m_ulTimeStart = GetTickCount64();
+	m_bIsClosed = false;
+	m_hGraphChart = (HANDLE)_beginthreadex(NULL, 0, UpdateGraphThread, this, 0, NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -96,4 +124,13 @@ void CDialogStockChart::OnPaint()
 					   // Do not call CDialogEx::OnPaint() for painting messages
 
 	CDialogEx::OnPaint();
+}
+
+
+void CDialogStockChart::OnClose()
+{
+	// TODO: Add your message handler code here and/or call default
+	m_bIsClosed = true;
+//	WaitForSingleObject(m_hGraphChart, INFINITE);
+//	CDialogEx::OnClose();
 }

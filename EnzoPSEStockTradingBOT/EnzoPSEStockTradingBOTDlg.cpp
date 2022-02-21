@@ -135,13 +135,14 @@ unsigned __stdcall  CEnzoPSEStockTradingBOTDlg::ListenForJSON(void* parg)
 	sJSON = resp.extract_string(true).get();
 	map<string_t, CStock> cstock = pDLG->JSONToStock(sJSON);
 	pDLG->InitializeStockInfo(cstock);
-
+	
 	while (WaitForSingleObject(pDLG->GetEventHandle(), 0) != WAIT_OBJECT_0)
 	{
 		resp = client.request(_T("GET")).get();
 		sJSON = resp.extract_string(true).get();
-		map<string_t, CStock> cstock = pDLG->JSONToStock(sJSON);
+		cstock = pDLG->JSONToStock(sJSON);
 		pDLG->DisplayStockInfo(cstock);
+		Sleep(1000);
 	}
 	return 0;
 }
@@ -194,6 +195,16 @@ HCURSOR CEnzoPSEStockTradingBOTDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
+void CEnzoPSEStockTradingBOTDlg::CopyNewDataToStockList(map<string_t, CStock>& mapStocks)
+{
+	map<string_t, CStock>::iterator it = mapStocks.begin();
+
+	while (it != mapStocks.end())
+	{
+		m_mapCStock[it->first] = it->second;
+		it++;
+	}
+}
 void CEnzoPSEStockTradingBOTDlg::DisplayStockInfo(map<string_t, CStock>& mapStocks)
 {
 	map<string_t, CStock>::iterator it = mapStocks.begin();
@@ -216,6 +227,8 @@ void CEnzoPSEStockTradingBOTDlg::DisplayStockInfo(map<string_t, CStock>& mapStoc
 	//	_T("Date") };
 	string_t sTemp;
 	CString csFormat;
+	//m_mapCStock = mapStocks;
+	CopyNewDataToStockList(mapStocks);
 	for (int i = 0; it!= mapStocks.end(); ++i, it++)
 	{
 		csFormat.Format(_T("%.2f"), it->second.GetPricePerShare());
@@ -248,6 +261,8 @@ void CEnzoPSEStockTradingBOTDlg::InitializeStockInfo(map<string_t, CStock>& mapS
 {
 	map<string_t, CStock>::iterator it = mapStocks.begin();
 	int nRow = 0, col = 0;
+
+	CopyNewDataToStockList(mapStocks);
 	m_ctrlListStocks.DeleteAllItems();
 	CString csFormat;
 	while (it != mapStocks.end())
@@ -381,7 +396,27 @@ void CEnzoPSEStockTradingBOTDlg::OnNMDblclkListStocks(NMHDR* pNMHDR, LRESULT* pR
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
+
+	LVITEM itemToGet;
+	ZeroMemory(&itemToGet, sizeof(LVITEM));
+
+	//specifies the index of the item in the CListCtrl that should be retrieved
+	itemToGet.iItem = pNMItemActivate->iItem;
+	itemToGet.iSubItem = 2;
+
+	TCHAR szBuffer[32];
+	memset(szBuffer, 0,sizeof(szBuffer));
+
+	itemToGet.mask = LVIF_TEXT;
+	itemToGet.pszText = szBuffer;
+	CString cs = m_ctrlListStocks.GetItemText(pNMItemActivate->iItem, 2);
+	int ret = m_ctrlListStocks.GetItem(&itemToGet);
+	//m_mapCStock
+
+	CStock *ptr = &m_mapCStock[cs.GetBuffer()];
 	CDialogStockChart m_dlgStockChart;
+	m_dlgStockChart.SetPointerToStock(ptr);
+
 	INT nRet = m_dlgStockChart.DoModal();
 }
 
@@ -390,5 +425,6 @@ void CEnzoPSEStockTradingBOTDlg::OnBnClickedButtonCheckgraph()
 {
 	// TODO: Add your control notification handler code here
 	CDialogStockChart dlg;
+	//dlg.SetPointerToStock(&m_mapCStock);
 	INT nRet = dlg.DoModal();
 }

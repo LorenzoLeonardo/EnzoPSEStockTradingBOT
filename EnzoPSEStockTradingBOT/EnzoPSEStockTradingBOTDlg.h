@@ -6,6 +6,9 @@
 #include "CStock.h"
 #include "CListCtrlCustom.h"
 #include "CDialogStockChart.h"
+#include <map>
+
+using namespace std;
 #define STOCK_BDO     _T("https://phisix-api4.appspot.com/stocks/BDO.json")
 #define STOCK_BPI     _T("https://phisix-api4.appspot.com/stocks/BPI.json")
 #define STOCK_CHIB    _T("https://phisix-api4.appspot.com/stocks/CHIB.json")
@@ -41,6 +44,7 @@ public:
 	inline map<string_t, CStock> JSONToStock(string_t sJSON);
 	void DisplayStockInfo(map<string_t, CStock>& mapStocks);
 	void InitializeStockInfo(map<string_t, CStock>& mapStocks);
+	void CopyNewDataToStockList(map<string_t, CStock>& mapStocks);
 	HANDLE GetEventHandle()
 	{
 		return m_hEvent;
@@ -59,6 +63,8 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 	CListCtrlCustom m_ctrlListStocks;
+	map<string_t, CStock> m_mapCStock;
+
 public:
 	afx_msg void OnClose();
 //	afx_msg void OnBnClickedOk();
