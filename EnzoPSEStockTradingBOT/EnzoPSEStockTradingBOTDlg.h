@@ -51,7 +51,17 @@ public:
 	}
 // Implementation
 protected:
-	
+	enum
+	{
+		COL_NUMBERING = 0,
+		COL_COMPANYNAME,
+		COL_STOCKSYMBOL,
+		COL_CURRENCY,
+		COL_PRICE,
+		COL_VOLUME,
+		COL_CHANGE,
+		COL_DATE,
+	};
 	HICON m_hIcon;
 	HANDLE m_hListenJSON;
 	HANDLE m_hEvent;

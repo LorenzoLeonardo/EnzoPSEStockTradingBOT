@@ -110,6 +110,14 @@ BOOL CDialogStockChart::OnInitDialog()
 	// TODO:  Add extra initialization here
 	m_ulTimeStart = GetTickCount64();
 	m_bIsClosed = false;
+	vector<double> yAxis, xAxis;
+	for (size_t i = 0; i < m_pCStock->GetChangeHistory().size(); i++)
+	{
+		yAxis.push_back(m_pCStock->GetChangeHistory()[i].GetPricePerShare());
+	//	xAxis.push_back(m_pCStock->GetChangeHistory()[i].GetPricePerShare());
+	}
+	//pSeries->SetPoints();
+
 	m_hGraphChart = (HANDLE)_beginthreadex(NULL, 0, UpdateGraphThread, this, 0, NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE

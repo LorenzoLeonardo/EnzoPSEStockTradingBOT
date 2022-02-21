@@ -111,18 +111,18 @@ BOOL CEnzoPSEStockTradingBOTDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	LPCTSTR lpcRecHeader[] = { _T("No."), _T("Company Name"), _T("Stock Symbol"), _T("Currency"), _T("Price Per Share"), _T("Volume"),  _T("Change"), _T("Date") };
-	int nCol = 0;
+	
 	//::SetWindowTheme(m_ctrlListStocks.GetSafeHwnd(), _T(""), _T(""));//To change text Color of Group Box
 	m_ctrlListStocks.SetExtendedStyle(LVS_EX_FLATSB | LVS_EX_HEADERDRAGDROP | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 	// TODO: Add extra initialization here
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_FIXED_WIDTH| LVCFMT_RIGHT, 30);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 250);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 100);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 150);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 90);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 110);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 100);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 250);
+	m_ctrlListStocks.InsertColumn(COL_NUMBERING, lpcRecHeader[COL_NUMBERING], LVCFMT_FIXED_WIDTH| LVCFMT_RIGHT, 30);
+	m_ctrlListStocks.InsertColumn(COL_COMPANYNAME, lpcRecHeader[COL_COMPANYNAME], LVCFMT_LEFT, 250);
+	m_ctrlListStocks.InsertColumn(COL_STOCKSYMBOL, lpcRecHeader[COL_STOCKSYMBOL], LVCFMT_LEFT, 100);
+	m_ctrlListStocks.InsertColumn(COL_CURRENCY, lpcRecHeader[COL_CURRENCY], LVCFMT_LEFT, 150);
+	m_ctrlListStocks.InsertColumn(COL_PRICE, lpcRecHeader[COL_PRICE], LVCFMT_LEFT, 90);
+	m_ctrlListStocks.InsertColumn(COL_VOLUME, lpcRecHeader[COL_VOLUME], LVCFMT_LEFT, 110);
+	m_ctrlListStocks.InsertColumn(COL_CHANGE, lpcRecHeader[COL_CHANGE], LVCFMT_LEFT, 100);
+	m_ctrlListStocks.InsertColumn(COL_DATE, lpcRecHeader[COL_DATE], LVCFMT_LEFT, 250);
 	m_bIsPressedStop = true;
 
 	m_hEvent = NULL;
@@ -234,25 +234,25 @@ void CEnzoPSEStockTradingBOTDlg::DisplayStockInfo(map<string_t, CStock>& mapStoc
 	{
 		csFormat.Format(_T("%.2f"), it->second.GetPricePerShare());
 		lvItem.iItem = i;
-		lvItem.iSubItem = 4;
+		lvItem.iSubItem = COL_PRICE;
 		lvItem.pszText = (LPTSTR)csFormat.GetBuffer();
 		m_ctrlListStocks.SetItem(&lvItem);
 
 		sTemp = to_wstring(it->second.GetVolume());
 		lvItem.iItem = i;
-		lvItem.iSubItem = 5;
+		lvItem.iSubItem = COL_VOLUME;
 		lvItem.pszText = (LPTSTR)sTemp.c_str();
 		m_ctrlListStocks.SetItem(&lvItem);
 
 		csFormat.Format(_T("%.2f"), it->second.GetPercentChange());
 		lvItem.iItem = i;
-		lvItem.iSubItem = 6;
+		lvItem.iSubItem = COL_CHANGE;
 		lvItem.pszText = (LPTSTR)csFormat.GetBuffer();
 		m_ctrlListStocks.SetItem(&lvItem);
 
 		sTemp = it->second.GetDate();
 		lvItem.iItem = i;
-		lvItem.iSubItem = 7;
+		lvItem.iSubItem = COL_DATE;
 		lvItem.pszText = (LPTSTR)sTemp.c_str();
 		m_ctrlListStocks.SetItem(&lvItem);
 	}
@@ -272,15 +272,15 @@ void CEnzoPSEStockTradingBOTDlg::InitializeStockInfo(map<string_t, CStock>& mapS
 			to_wstring(nRow + 1).c_str(), 0, 0, 0, 0);
 
 
-		m_ctrlListStocks.SetItemText(nRow, col + 1, it->second.GetCompanyName().c_str());
-		m_ctrlListStocks.SetItemText(nRow, col + 2, it->second.GetStockSymbol().c_str());
-		m_ctrlListStocks.SetItemText(nRow, col + 3, it->second.GetCurrency().c_str());
+		m_ctrlListStocks.SetItemText(nRow, COL_COMPANYNAME, it->second.GetCompanyName().c_str());
+		m_ctrlListStocks.SetItemText(nRow, COL_STOCKSYMBOL, it->second.GetStockSymbol().c_str());
+		m_ctrlListStocks.SetItemText(nRow, COL_CURRENCY, it->second.GetCurrency().c_str());
 		csFormat.Format(_T("%.2f"), it->second.GetPricePerShare());
-		m_ctrlListStocks.SetItemText(nRow, col + 4, csFormat);
-		m_ctrlListStocks.SetItemText(nRow, col + 5, to_wstring(it->second.GetVolume()).c_str());
+		m_ctrlListStocks.SetItemText(nRow, COL_PRICE, csFormat);
+		m_ctrlListStocks.SetItemText(nRow, COL_VOLUME, to_wstring(it->second.GetVolume()).c_str());
 		csFormat.Format(_T("%.2f"), it->second.GetPercentChange());
-		m_ctrlListStocks.SetItemText(nRow, col + 6, csFormat);
-		m_ctrlListStocks.SetItemText(nRow, col + 7, it->second.GetDate().c_str());
+		m_ctrlListStocks.SetItemText(nRow, COL_CHANGE, csFormat);
+		m_ctrlListStocks.SetItemText(nRow, COL_DATE, it->second.GetDate().c_str());
 		it++;
 		nRow++;
 	}
@@ -413,7 +413,7 @@ void CEnzoPSEStockTradingBOTDlg::OnNMDblclkListStocks(NMHDR* pNMHDR, LRESULT* pR
 	CDialogStockChart m_dlgStockChart;
 	m_dlgStockChart.SetPointerToStock(ptr);
 
-	INT nRet = m_dlgStockChart.DoModal();
+	INT_PTR nRet = m_dlgStockChart.DoModal();
 }
 
 
@@ -422,7 +422,7 @@ void CEnzoPSEStockTradingBOTDlg::OnBnClickedButtonCheckgraph()
 	// TODO: Add your control notification handler code here
 	CDialogStockChart dlg;
 	//dlg.SetPointerToStock(&m_mapCStock);
-	INT nRet = dlg.DoModal();
+	INT_PTR nRet = dlg.DoModal();
 }
 
 

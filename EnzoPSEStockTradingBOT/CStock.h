@@ -1,6 +1,7 @@
 #pragma once
-
+#include <vector>
 #include <string>
+using namespace std;
 
 #ifndef string_t
     #ifdef UNICODE
@@ -21,12 +22,15 @@ protected:
     unsigned long   m_ulVolume;
     string_t        m_sStockSymbol;
     string_t        m_sDate;
-
+    string_t        m_sTime;
+    ULONG           m_ulGMT;
+    ULONG           m_ulTime;
+    vector<CStock>  m_vChangeHistory;
 
 public:
 
     CStock() :m_sCompanyName(_T("")), m_sCurrency(_T("")), m_fPricePerShare(0), m_fPercentChange(0),
-        m_ulVolume(0), m_sStockSymbol(_T("")), m_sDate(_T("")){}
+        m_ulVolume(0), m_sStockSymbol(_T("")), m_sDate(_T("")), m_sTime(_T("")), m_ulGMT(0), m_ulTime(0) {}
     ~CStock() {}
 
     CStock operator=(const CStock& b)
@@ -38,7 +42,10 @@ public:
         this->m_ulVolume = b.m_ulVolume;
         this->m_sStockSymbol = b.m_sStockSymbol;
         this->m_sDate = b.m_sDate;
-
+        this->m_sTime = b.m_sTime;
+        this->m_ulGMT = b.m_ulGMT;
+        this->m_ulTime = b.m_ulTime;
+        this->m_vChangeHistory.assign(b.m_vChangeHistory.begin(), b.m_vChangeHistory.end());
         return *this;
     }
 
@@ -70,7 +77,18 @@ public:
     {
         m_sDate = sDate;
     }
-
+    void SetTime(string_t sTime)
+    {
+        m_sTime = sTime;
+    }
+    void SetGMT(ULONG ulGMT)
+    {
+        m_ulGMT = ulGMT;
+    }
+    void SetTimeUL(ULONG ulTime)
+    {
+        m_ulTime = ulTime;
+    }
 
     string_t GetCompanyName()
     {
@@ -100,5 +118,29 @@ public:
     {
         return m_sDate;
     }
+    string_t GetTime()
+    {
+        return m_sTime;
+    }
+    ULONG GetGMT()
+    {
+        return m_ulGMT;
+    }
+    ULONG GetTimeUl()
+    {
+        return m_ulTime;
+    }
 
+    vector<CStock> GetChangeHistory()
+    {
+        return m_vChangeHistory;
+    }
+    void AddToChangeHistory(CStock stock)
+    {
+        m_vChangeHistory.push_back(stock);
+    }
+    void AddToChangeHistory(vector<CStock> vstock)
+    {
+        m_vChangeHistory.assign(vstock.begin(), vstock.end());
+    }
 };
