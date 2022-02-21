@@ -5,7 +5,7 @@
 #include "ChartCtrl/Chartlabel.h"
 #include "CStock.h"
 // CDialogStockChart dialog
-
+#define WM_ENZO_CLOSE (WM_USER + 1)
 class CDialogStockChart : public CDialogEx
 {
 	DECLARE_DYNAMIC(CDialogStockChart)
@@ -13,7 +13,7 @@ class CDialogStockChart : public CDialogEx
 public:
 	CDialogStockChart(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CDialogStockChart();
-
+	afx_msg LRESULT OnUserDefinedCloseDialog(WPARAM wParam, LPARAM lParam);
 	void SetPointerToStock(CStock* pStock)
 	{
 		m_pCStock = pStock;

@@ -44,6 +44,7 @@ BEGIN_MESSAGE_MAP(CDialogStockChart, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_WM_CLOSE()
+	ON_MESSAGE(WM_ENZO_CLOSE, OnUserDefinedCloseDialog)
 END_MESSAGE_MAP()
 
 
@@ -56,15 +57,18 @@ unsigned __stdcall  CDialogStockChart::UpdateGraphThread(void* parg)
 
 	while (!pDLG->UpdateGraph())
 	{
-		Sleep(60000);
+		Sleep(1000);
 	}
+	::PostMessage(pDLG->GetSafeHwnd(),WM_ENZO_CLOSE,0,0);
 	return 0;
 }
-
+LRESULT CDialogStockChart::OnUserDefinedCloseDialog(WPARAM wParam, LPARAM lParam)
+{
+	OnOK();
+	return 0;
+}
 BOOL CDialogStockChart::UpdateGraph()
 {
-
-
 	double XVal[20];
 	double YVal[20];
 
@@ -129,8 +133,5 @@ void CDialogStockChart::OnPaint()
 
 void CDialogStockChart::OnClose()
 {
-	// TODO: Add your message handler code here and/or call default
 	m_bIsClosed = true;
-//	WaitForSingleObject(m_hGraphChart, INFINITE);
-//	CDialogEx::OnClose();
 }
