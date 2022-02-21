@@ -53,8 +53,12 @@ CEnzoPSEStockTradingBOTDlg::CEnzoPSEStockTradingBOTDlg(CWnd* pParent /*=nullptr*
 	: CDialogEx(IDD_ENZOPSESTOCKTRADINGBOT_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_hBrushBackGround = CreateSolidBrush(RGB(93, 107, 153));
 }
-
+CEnzoPSEStockTradingBOTDlg::~CEnzoPSEStockTradingBOTDlg()
+{
+	DeleteObject(m_hBrushBackGround);
+}
 void CEnzoPSEStockTradingBOTDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -71,6 +75,7 @@ ON_BN_CLICKED(IDC_START_STOP, &CEnzoPSEStockTradingBOTDlg::OnBnClickedStartStop)
 ON_NOTIFY(NM_DBLCLK, IDC_LIST_STOCKS, &CEnzoPSEStockTradingBOTDlg::OnNMDblclkListStocks)
 ON_BN_CLICKED(IDC_BUTTON_CHECKGRAPH, &CEnzoPSEStockTradingBOTDlg::OnBnClickedButtonCheckgraph)
 ON_MESSAGE(WM_ENZO_CLOSE, OnUserDefinedCloseDialog)
+ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -111,13 +116,13 @@ BOOL CEnzoPSEStockTradingBOTDlg::OnInitDialog()
 	m_ctrlListStocks.SetExtendedStyle(LVS_EX_FLATSB | LVS_EX_HEADERDRAGDROP | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 	// TODO: Add extra initialization here
 	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_FIXED_WIDTH| LVCFMT_RIGHT, 30);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 130);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 60);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 60);
+	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 250);
+	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 100);
+	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 150);
 	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 90);
 	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 110);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 60);
-	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 180);
+	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 100);
+	m_ctrlListStocks.InsertColumn(nCol, lpcRecHeader[nCol++], LVCFMT_LEFT, 250);
 	m_bIsPressedStop = true;
 
 	m_hEvent = NULL;
@@ -221,14 +226,6 @@ void CEnzoPSEStockTradingBOTDlg::DisplayStockInfo(map<string_t, CStock>& mapStoc
 	lvItem.mask = LVIF_TEXT;
 	int findResult = -1;
 
-	//LPCTSTR lpcRecHeader[] = { _T("No."), 
-	//	_T("Company Name"), 
-	//	_T("Stock Symbol"),
-	//	_T("Currency"),
-	//	_T("Price Per Share"),
-	//	_T("Volume"), 
-	//	_T("Change"), 
-	//	_T("Date") };
 	string_t sTemp;
 	CString csFormat;
 	//m_mapCStock = mapStocks;
@@ -426,4 +423,24 @@ void CEnzoPSEStockTradingBOTDlg::OnBnClickedButtonCheckgraph()
 	CDialogStockChart dlg;
 	//dlg.SetPointerToStock(&m_mapCStock);
 	INT nRet = dlg.DoModal();
+}
+
+
+HBRUSH CEnzoPSEStockTradingBOTDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  Change any attributes of the DC here
+	switch (nCtlColor)
+	{
+		case CTLCOLOR_DLG:
+		{
+			//pDC->SetTextColor(ENZO_COLOR_WHITE);
+			pDC->SetBkColor(RGB(64, 86, 141));
+			//pDC->SetBkMode(TRANSPARENT);
+			return m_hBrushBackGround;
+		}
+	}
+	// TODO:  Return a different brush if the default is not desired
+	return hbr;
 }

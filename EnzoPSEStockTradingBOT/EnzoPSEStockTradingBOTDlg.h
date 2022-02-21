@@ -29,7 +29,7 @@ class CEnzoPSEStockTradingBOTDlg : public CDialogEx
 // Construction
 public:
 	CEnzoPSEStockTradingBOTDlg(CWnd* pParent = nullptr);	// standard constructor
-
+	~CEnzoPSEStockTradingBOTDlg();
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ENZOPSESTOCKTRADINGBOT_DIALOG };
@@ -65,6 +65,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	CListCtrlCustom m_ctrlListStocks;
 	map<string_t, CStock> m_mapCStock;
+	HBRUSH m_hBrushBackGround;
 
 public:
 	afx_msg void OnClose();
@@ -72,4 +73,5 @@ public:
 	afx_msg void OnBnClickedStartStop();
 	afx_msg void OnNMDblclkListStocks(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedButtonCheckgraph();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };

@@ -26,10 +26,12 @@ CDialogStockChart::CDialogStockChart(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_CHART_DIALOG, pParent)
 {
 	m_hGraphChart = NULL;
+	m_hBrushBackGround = CreateSolidBrush(RGB(93, 107, 153));
 }
 
 CDialogStockChart::~CDialogStockChart()
 {
+	DeleteObject(m_hBrushBackGround);
 	CloseHandle(m_hGraphChart);
 }
 
@@ -96,11 +98,11 @@ BOOL CDialogStockChart::OnInitDialog()
 	pBottomAxis = m_ChartCtrl.CreateStandardAxis(CChartCtrl::BottomAxis);
 	pLeftAxis = m_ChartCtrl.CreateStandardAxis(CChartCtrl::LeftAxis);
 	pBottomAxis->SetMinMax(0, 360);
-	pLeftAxis->SetMinMax(0, m_pCStock->GetPricePerShare()*2);
+	pLeftAxis->SetMinMax(0, abs(m_pCStock->GetPricePerShare()*2));
 	pBottomAxis->SetTickIncrement(false, 20.0);
 	pBottomAxis->SetDiscrete(false);
 	pBottomAxis->EnableScrollBar(true);
-
+	SetWindowText(m_pCStock->GetCompanyName().c_str());
 	
 	pSeries = m_ChartCtrl.CreateLineSerie();
 	pSeries->SetWidth(5);
@@ -116,11 +118,19 @@ BOOL CDialogStockChart::OnInitDialog()
 
 HBRUSH CDialogStockChart::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  Change any attributes of the DC here
+	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  Return a different brush if the default is not desired
+	switch (nCtlColor)
+	{
+		case CTLCOLOR_DLG:
+		{
+			//pDC->SetTextColor(ENZO_COLOR_WHITE);
+			pDC->SetBkColor(RGB(64, 86, 141));
+			//pDC->SetBkMode(TRANSPARENT);
+			return m_hBrushBackGround;
+		}
+	}
 	return hbr;
 }
 

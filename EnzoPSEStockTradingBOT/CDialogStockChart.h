@@ -32,14 +32,14 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	DECLARE_MESSAGE_MAP()
 	BOOL m_bIsClosed;
-	ULONG m_ulTimeStart;
+	ULONGLONG m_ulTimeStart;
 	double m_startPrice;
 	CChartCtrl m_ChartCtrl;
 	CChartStandardAxis *pBottomAxis;
 	CChartStandardAxis *pLeftAxis;
 	CChartLineSerie *pSeries;
 	CStock* m_pCStock;
-
+	HBRUSH m_hBrushBackGround;
 public:
 	afx_msg void OnClose();
 	CStatic m_ctrlStaticCompanyName;
