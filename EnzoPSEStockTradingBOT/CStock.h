@@ -28,6 +28,19 @@ protected:
     ULONG           m_ulTime;
     vector<CStock>  m_vChangeHistory;
 
+    inline ULONG StringTimeToUlong(string_t sTime)
+    {
+        TCHAR* stopstring;
+        string_t sTemp;
+
+        sTemp = sTime.substr(0, sTime.find(_T(":")));
+        ULONG ulHR = wcstoul(sTemp.c_str(), &stopstring, 10);
+        sTemp = sTime.substr(sTime.find(_T(":")) + 1, 2);
+        ULONG ulMin = wcstoul(sTemp.c_str(), &stopstring, 10);
+        sTemp = sTime.substr(sTime.rfind(_T(":")) + 1, 2);
+        ULONG ulSec = wcstoul(sTemp.c_str(), &stopstring, 10);
+        return (ulHR * 60 * 60) + ulMin * 60 + ulSec;
+    }
 public:
 
     CStock() :m_sCompanyName(_T("")), m_sCurrency(_T("")), m_fPricePerShare(0), m_fPercentChange(0),
@@ -81,6 +94,9 @@ public:
         m_sDate = sDate.substr(0,sDate.find(_T("T")));
         m_sTime = sDate.substr(sDate.find(_T("T"))+1, (sDate.find(_T("+")) - sDate.find(_T("T"))-1));
         m_sGMT = sDate.substr(sDate.find(_T("+"))+1, sDate.length()- sDate.find(_T("+")));
+
+        m_ulTime = StringTimeToUlong(m_sTime);
+
     }
     void SetTime(string_t sTime)
     {
