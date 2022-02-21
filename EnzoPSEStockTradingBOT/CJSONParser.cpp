@@ -165,7 +165,7 @@ void CJSONParser::ParseJSON()
 	size_t nEndOfStockString = 0;
 	size_t i = 0;
 
-	while(m_sJSONstring[i] != _T('['))
+	while((m_sJSONstring[i] != _T('[')) && (i < length))
 		i++;
 
 	while(i<length)
