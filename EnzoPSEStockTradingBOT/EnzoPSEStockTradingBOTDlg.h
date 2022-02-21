@@ -61,6 +61,7 @@ protected:
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
+	afx_msg LRESULT OnUserDefinedCloseDialog(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 	CListCtrlCustom m_ctrlListStocks;
 	map<string_t, CStock> m_mapCStock;

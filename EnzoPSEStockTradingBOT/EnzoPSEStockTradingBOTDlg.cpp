@@ -70,6 +70,7 @@ BEGIN_MESSAGE_MAP(CEnzoPSEStockTradingBOTDlg, CDialogEx)
 ON_BN_CLICKED(IDC_START_STOP, &CEnzoPSEStockTradingBOTDlg::OnBnClickedStartStop)
 ON_NOTIFY(NM_DBLCLK, IDC_LIST_STOCKS, &CEnzoPSEStockTradingBOTDlg::OnNMDblclkListStocks)
 ON_BN_CLICKED(IDC_BUTTON_CHECKGRAPH, &CEnzoPSEStockTradingBOTDlg::OnBnClickedButtonCheckgraph)
+ON_MESSAGE(WM_ENZO_CLOSE, OnUserDefinedCloseDialog)
 END_MESSAGE_MAP()
 
 
@@ -124,7 +125,11 @@ BOOL CEnzoPSEStockTradingBOTDlg::OnInitDialog()
 	OnBnClickedStartStop();
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
-
+LRESULT CEnzoPSEStockTradingBOTDlg::OnUserDefinedCloseDialog(WPARAM wParam, LPARAM lParam)
+{
+	OnOK();
+	return 0;
+}
 unsigned __stdcall  CEnzoPSEStockTradingBOTDlg::ListenForJSON(void* parg)
 {
 	CEnzoPSEStockTradingBOTDlg* pDLG = (CEnzoPSEStockTradingBOTDlg * )parg;
@@ -144,6 +149,7 @@ unsigned __stdcall  CEnzoPSEStockTradingBOTDlg::ListenForJSON(void* parg)
 		pDLG->DisplayStockInfo(cstock);
 		Sleep(1000);
 	}
+	::PostMessage(pDLG->GetSafeHwnd(), WM_ENZO_CLOSE, 0, 0);
 	return 0;
 }
 
@@ -347,7 +353,10 @@ void CEnzoPSEStockTradingBOTDlg::OnClose()
 	}
 	else
 	{
-		AfxMessageBox(_T("Please stop the monitoring before you exit the applicatioon."));
+		SetEvent(m_hEvent);
+		m_bIsPressedStop = true;
+		this->GetDlgItem(IDC_START_STOP)->SetWindowText(_T("Start Monitoring"));
+
 	}
 }
 
